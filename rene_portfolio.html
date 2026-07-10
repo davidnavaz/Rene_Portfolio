@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rene David Navarrete — Data Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ─── TOKENS ─────────────────────────────────────────────── */
+  :root {
+    --accent:       #64748B;
+    --accent-light: #94A3B8;
+    --accent-dim:   #E2E8F0;
+    --black:        #0F172A;
+    --charcoal:     #1E293B;
+    --mid:          #475569;
+    --muted:        #94A3B8;
+    --rule:         #CBD5E1;
+    --bg:           #FAFAFA;
+    --white:        #FFFFFF;
+    --font-head:    'Space Grotesk', sans-serif;
+    --font-mono:    'JetBrains Mono', monospace;
+    --radius:       10px;
+    --max-w:        900px;
+  }
+
+  /* ─── RESET ──────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-head);
+    background: var(--bg);
+    color: var(--charcoal);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { color: var(--black); }
+  ul { list-style: none; }
+
+  /* ─── LAYOUT ─────────────────────────────────────────────── */
+  .container {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+  section { padding: 80px 0; }
+  section + section { border-top: 1px solid var(--rule); }
+
+  /* ─── FADE-IN ON SCROLL ──────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── NAV ────────────────────────────────────────────────── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250,250,250,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 28px;
+  }
+  .nav-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+  }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--mid);
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--black); }
+
+  /* ─── HERO ───────────────────────────────────────────────── */
+  #hero {
+    padding: 90px 0 80px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-inner {
+    display: flex;
+    align-items: center;
+    gap: 52px;
+  }
+  .hero-avatar {
+    flex-shrink: 0;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 34px;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    box-shadow: 0 0 0 4px var(--accent-dim);
+  }
+  .hero-text { flex: 1; }
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .hero-name {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    color: var(--black);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+  .hero-tagline {
+    font-size: 17px;
+    color: var(--mid);
+    font-weight: 400;
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+  .hero-tagline strong {
+    color: var(--charcoal);
+    font-weight: 600;
+  }
+  .hero-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: all 0.2s;
+    border: 1.5px solid transparent;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--white);
+    border-color: var(--accent);
+  }
+  .btn-primary:hover {
+    background: var(--black);
+    border-color: var(--black);
+    color: var(--white);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .btn-outline:hover {
+    background: var(--accent);
+    color: var(--white);
+  }
+
+  /* ─── SECTION HEADER ─────────────────────────────────────── */
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--black);
+    letter-spacing: -0.01em;
+    margin-bottom: 36px;
+  }
+
+  /* ─── KPI CALLOUTS (signature element) ───────────────────── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  .kpi-card {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+    border-radius: 3px 0 0 3px;
+  }
+  .kpi-value {
+    font-family: var(--font-mono);
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .kpi-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ─── ABOUT ──────────────────────────────────────────────── */
+  .about-text {
+    font-size: 17px;
+    color: var(--mid);
+    line-height: 1.75;
+    max-width: 680px;
+  }
+  .about-text strong { color: var(--charcoal); font-weight: 600; }
+
+  /* ─── SKILLS ─────────────────────────────────────────────── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px 48px;
+  }
+  .skill-group-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .skill-bar-row {
+    margin-bottom: 13px;
+  }
+  .skill-bar-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+  }
+  .skill-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--charcoal);
+  }
+  .skill-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .skill-track {
+    height: 4px;
+    background: var(--accent-dim);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .skill-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+    width: 0;
+    transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  /* pro pills (no width bar) */
+  .pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pill {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border-radius: 4px;
+    padding: 4px 11px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ─── EXPERIENCE ─────────────────────────────────────────── */
+  .exp-list { display: flex; flex-direction: column; gap: 44px; }
+  .exp-item { position: relative; padding-left: 20px; }
+  .exp-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+  .exp-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--black);
+    letter-spacing: -0.01em;
+  }
+  .exp-date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .exp-company {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .exp-bullets { padding-left: 4px; }
+  .exp-bullets li {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.65;
+    padding: 3px 0 3px 16px;
+    position: relative;
+  }
+  .exp-bullets li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent-light);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  /* ─── PROJECT CARD ───────────────────────────────────────── */
+  .projects-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+  .project-card {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    background: var(--white);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card:hover {
+    border-color: var(--accent-light);
+    box-shadow: 0 4px 24px rgba(100,116,139,0.1);
+  }
+  .project-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .project-card:hover::after { transform: scaleX(1); }
+  .project-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 6px;
+  }
+  .project-name a {
+    color: var(--black);
+    transition: color 0.2s;
+  }
+  .project-name a:hover { color: var(--accent); }
+  .project-desc {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.65;
+    margin-bottom: 14px;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+  .project-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border-radius: 3px;
+    padding: 3px 9px;
+    letter-spacing: 0.05em;
+  }
+  .project-status {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #F59E0B;
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-radius: 3px;
+    padding: 3px 9px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── EDUCATION & CERTS ──────────────────────────────────── */
+  .edu-block { margin-bottom: 36px; }
+  .edu-school {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 2px;
+  }
+  .edu-detail {
+    font-size: 14px;
+    color: var(--mid);
+    margin-bottom: 4px;
+  }
+  .edu-gpa {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .certs-list { display: flex; flex-direction: column; gap: 10px; }
+  .cert-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--mid);
+  }
+  .cert-dot {
+    flex-shrink: 0;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .cert-in-progress {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #F59E0B;
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-radius: 3px;
+    padding: 2px 7px;
+    letter-spacing: 0.05em;
+    margin-left: auto;
+  }
+
+  /* ─── FOOTER ─────────────────────────────────────────────── */
+  footer {
+    background: var(--black);
+    color: var(--muted);
+    padding: 60px 28px;
+    border-top: 1px solid var(--rule);
+  }
+  .footer-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .footer-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .footer-tagline {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-light);
+    letter-spacing: 0.06em;
+  }
+  .footer-contact { text-align: right; }
+  .footer-contact a {
+    display: block;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    transition: color 0.2s;
+  }
+  .footer-contact a:hover { color: var(--white); }
+  .footer-bottom {
+    max-width: var(--max-w);
+    margin: 36px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid #1E293B;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #475569;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+
+  /* ─── RESPONSIVE ─────────────────────────────────────────── */
+  @media (max-width: 680px) {
+    section { padding: 60px 0; }
+    .hero-inner { flex-direction: column; gap: 28px; text-align: center; }
+    .hero-links { justify-content: center; }
+    .kpi-row { grid-template-columns: 1fr; gap: 12px; }
+    .skills-grid { grid-template-columns: 1fr; gap: 28px; }
+    .exp-header { flex-direction: column; }
+    .footer-inner { flex-direction: column; }
+    .footer-contact { text-align: left; }
+    .nav-links { display: none; }
+  }
+
+  /* ─── REDUCED MOTION ─────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .skill-fill { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav aria-label="Site navigation">
+  <div class="nav-inner">
+    <span class="nav-logo">RDN<span style="color:var(--muted)"> / data</span></span>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-avatar" aria-label="Initials avatar for Rene David Navarrete">RN</div>
+      <div class="hero-text">
+        <p class="hero-eyebrow">Data Analytics · New York City, NY</p>
+        <h1 class="hero-name">Rene David<br>Navarrete</h1>
+        <p class="hero-tagline">
+          <strong>BBA Candidate — CIS Data Analytics Track</strong> · AWS Cloud Basics · Python · Excel · Salesforce
+        </p>
+        <div class="hero-links">
+          <a href="mailto:david911navarrete@gmail.com" class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email Me
+          </a>
+          <a href="https://www.linkedin.com/in/david-navarrete-44a342265" target="_blank" rel="noopener" class="btn btn-outline">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="reveal">
+      <!-- KPI CALLOUTS -->
+      <div class="kpi-row" aria-label="Key stats">
+        <div class="kpi-card">
+          <div class="kpi-value" data-count-to="3.4" data-decimals="1">3.4</div>
+          <div class="kpi-label">GPA</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" data-count-to="4" data-decimals="0">4</div>
+          <div class="kpi-label">Yr AWS Apprenticeship</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" data-count-to="5" data-decimals="0">5</div>
+          <div class="kpi-label">Certs &amp; Completions</div>
+        </div>
+      </div>
+
+      <div class="section-label">About</div>
+      <h2 class="section-title">Background</h2>
+      <p class="about-text">
+        Rene is a <strong>BBA candidate at Baruch College (Zicklin School of Business)</strong>, pursuing a Computer Information Systems degree with a Data Analytics concentration. He brings four years of hands-on experience coordinating cloud-based sales workflows at <strong>Amazon Web Services</strong> and is currently expanding his technical toolkit through the <strong>Tech Talent Pipeline Residency</strong>, where he is developing skills in Python, data analysis, and regression modeling alongside a network of NYC tech professionals.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container reveal">
+    <div class="section-label">Skills</div>
+    <h2 class="section-title">Technical &amp; Professional</h2>
+    <div class="skills-grid">
+
+      <div>
+        <p class="skill-group-label">Technical</p>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-name">Python</span>
+            <span class="skill-tag">developing</span>
+          </div>
+          <div class="skill-track"><div class="skill-fill" data-width="55"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-name">Microsoft Excel</span>
+            <span class="skill-tag">certified</span>
+          </div>
+          <div class="skill-track"><div class="skill-fill" data-width="78"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-name">AWS Cloud (EC2, S3, RDS)</span>
+            <span class="skill-tag">apprenticeship</span>
+          </div>
+          <div class="skill-track"><div class="skill-fill" data-width="65"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-name">Salesforce</span>
+            <span class="skill-tag">professional use</span>
+          </div>
+          <div class="skill-track"><div class="skill-fill" data-width="60"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-name">Data Analysis / Regression</span>
+            <span class="skill-tag">developing</span>
+          </div>
+          <div class="skill-track"><div class="skill-fill" data-width="50"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-meta">
+            <span class="skill-name">Microsoft Word / PowerPoint</span>
+            <span class="skill-tag">certified</span>
+          </div>
+          <div class="skill-track"><div class="skill-fill" data-width="82"></div></div>
+        </div>
+      </div>
+
+      <div>
+        <p class="skill-group-label">Professional</p>
+        <div class="pill-group">
+          <span class="pill">Customer Service</span>
+          <span class="pill">Rapport Building</span>
+          <span class="pill">Public Speaking</span>
+          <span class="pill">Team Collaboration</span>
+          <span class="pill">Solution-Oriented</span>
+          <span class="pill">Project Management</span>
+        </div>
+
+        <p class="skill-group-label" style="margin-top:32px;">Cloud &amp; Platforms</p>
+        <div class="pill-group">
+          <span class="pill">Cloud Computing Fundamentals</span>
+          <span class="pill">AWS Cloud Basics</span>
+          <span class="pill">Salesforce CRM</span>
+          <span class="pill">Google Maps API</span>
+          <span class="pill">Shopify</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container reveal">
+    <div class="section-label">Experience</div>
+    <h2 class="section-title">Professional History</h2>
+    <div class="exp-list">
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <span class="exp-title">Sales Coordinator Apprentice</span>
+          <span class="exp-date">Aug 2022 – Feb 2026</span>
+        </div>
+        <p class="exp-company">Amazon Web Services (AWS) · New York City, NY · In-Person</p>
+        <ul class="exp-bullets">
+          <li>Completed a 4-year apprenticeship program gaining exposure to core AWS services including EC2, S3, and RDS.</li>
+          <li>Engaged prospective clients via Salesforce, supporting initial outreach and follow-ups and building foundational customer relationship skills.</li>
+          <li>Evaluated client business requirements and matched them to tailored AWS cloud solutions, directly supporting the sales team's ability to close aligned deals.</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <span class="exp-title">Technical Mentorship Resident</span>
+          <span class="exp-date">Jun 2026 – Present</span>
+        </div>
+        <p class="exp-company">Tech Talent Pipeline Residency · New York City, NY · Hybrid</p>
+        <ul class="exp-bullets">
+          <li>Participating in career coaching, professional development workshops, and networking with NYC tech professionals.</li>
+          <li>Developing Python, data analytical skills, Excel proficiency, and regression modeling techniques.</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <span class="exp-title">Professional Development Program</span>
+          <span class="exp-date">Aug 2022 – Feb 2026</span>
+        </div>
+        <p class="exp-company">CareerWiseUSA · New York City, NY · In-Person</p>
+        <ul class="exp-bullets">
+          <li>Completed a comprehensive career readiness program focused on workplace professionalism, business fundamentals, and effective corporate communication.</li>
+          <li>Collaborated on team-based projects addressing real-world business scenarios, strengthening teamwork, leadership, and problem-solving abilities.</li>
+        </ul>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <span class="exp-title">Taxi Dispatcher</span>
+          <span class="exp-date">Jun 2021 – Sep 2021</span>
+        </div>
+        <p class="exp-company">Delta Transportation · New York City, NY · In-Person</p>
+        <ul class="exp-bullets">
+          <li>Coordinated 30+ daily driver assignments, reducing client wait times by approximately 20%.</li>
+          <li>Communicated directly with clients to confirm bookings, provide updates, and address special transportation needs.</li>
+          <li>Maintained 100% accurate records of bookings, driver schedules, and client information using internal systems.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container reveal">
+    <div class="section-label">Projects</div>
+    <h2 class="section-title">Build Work</h2>
+    <div class="projects-grid">
+      <div class="project-card">
+        <p class="project-name">
+          <a href="https://elitesprinternyc.com/" target="_blank" rel="noopener">Elite Sprinter NYC — Full-Stack Web App</a>
+        </p>
+        <p class="project-desc">
+          Engineered a full-stack web application for a luxury chauffeur service featuring dynamic pricing and a multi-step booking flow integrated with Google Maps API through Shopify.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Full-Stack Development</span>
+          <span class="project-tag">Google Maps API</span>
+          <span class="project-tag">Shopify</span>
+          <span class="project-tag">Dynamic Pricing</span>
+          <span class="project-status">In Development</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION & CERTS -->
+<section id="education">
+  <div class="container reveal">
+    <div class="section-label">Education &amp; Certifications</div>
+    <h2 class="section-title">Credentials</h2>
+
+    <div class="edu-block">
+      <p class="edu-school">Baruch College — Zicklin School of Business</p>
+      <p class="edu-detail">Bachelor of Business Administration · Computer Information Systems, Data Analytics Track</p>
+      <p class="edu-detail">New York City, NY · Expected May 2028</p>
+      <p class="edu-gpa">GPA: 3.4</p>
+    </div>
+
+    <p class="skill-group-label" style="margin-bottom:18px;">Certificates &amp; Accomplishments</p>
+    <ul class="certs-list">
+      <li class="cert-item">
+        <span class="cert-dot"></span>
+        <span>LinkedIn Learning — Word Essential Training (Microsoft 365)</span>
+      </li>
+      <li class="cert-item">
+        <span class="cert-dot"></span>
+        <span>LinkedIn Learning — Excel Essential Training (Microsoft 365)</span>
+      </li>
+      <li class="cert-item">
+        <span class="cert-dot"></span>
+        <span>LinkedIn Learning — Project Management Simplified</span>
+      </li>
+      <li class="cert-item">
+        <span class="cert-dot"></span>
+        <span>CareerWiseUSA Program Graduate</span>
+      </li>
+      <li class="cert-item">
+        <span class="cert-dot"></span>
+        <span>AWS Cloud Practitioner</span>
+        <span class="cert-in-progress">In Progress</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- CONTACT / FOOTER -->
+<footer id="contact">
+  <div class="footer-inner">
+    <div>
+      <p class="footer-name">Rene David Navarrete</p>
+      <p class="footer-tagline">BBA · Data Analytics · New York City</p>
+    </div>
+    <div class="footer-contact">
+      <a href="mailto:david911navarrete@gmail.com">david911navarrete@gmail.com</a>
+      <a href="tel:9292505160">929-250-5160</a>
+      <a href="https://www.linkedin.com/in/david-navarrete-44a342265" target="_blank" rel="noopener">linkedin.com/in/david-navarrete-44a342265</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    Available for internship and analyst roles · New York City, NY 11370
+  </div>
+</footer>
+
+<script>
+/* ── SCROLL REVEAL ───────────────────────────────────────────── */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // trigger skill bars and KPI counters once visible
+      triggerSkillBars(e.target);
+      triggerKPICounters(e.target);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => io.observe(el));
+
+/* ── SKILL BAR ANIMATION ─────────────────────────────────────── */
+function triggerSkillBars(container) {
+  const fills = container.querySelectorAll('.skill-fill[data-width]');
+  fills.forEach((fill, i) => {
+    setTimeout(() => {
+      fill.style.width = fill.dataset.width + '%';
+    }, i * 80);
+  });
+}
+
+/* ── KPI COUNTER ANIMATION ───────────────────────────────────── */
+function triggerKPICounters(container) {
+  const kpiValues = container.querySelectorAll('.kpi-value[data-count-to]');
+  kpiValues.forEach((el, idx) => {
+    const target = parseFloat(el.dataset.countTo);
+    const decimals = parseInt(el.dataset.decimals || '0');
+    const duration = 1200;
+    const start = performance.now();
+    setTimeout(() => {
+      function frame(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = target * eased;
+        el.textContent = current.toFixed(decimals);
+        if (progress < 1) requestAnimationFrame(frame);
+        else el.textContent = target.toFixed(decimals);
+      }
+      requestAnimationFrame(frame);
+    }, idx * 150);
+  });
+}
+
+/* ── INITIAL: trigger hero section (already visible) ─────────── */
+window.addEventListener('load', () => {
+  // Hero KPIs are inside a reveal — but also run on page load for above-fold
+  const heroSection = document.querySelector('#about .reveal');
+  // just wait for IO to catch it; it will be triggered on first scroll
+});
+</script>
+</body>
+</html>
